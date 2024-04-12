@@ -7,8 +7,45 @@
     <!-- <script src="index.js"></script> -->
   </head>
   <body>
-    <form action="http://127.0.0.1:8088/play">
+    <form action="/play">
       <button id="play">Play</button>
     </form>
+
+    <br />
+
+    <form id="form" action="/form">
+      <input
+        type="file"
+        id="filesInput"
+        name="filesInput"
+        multiple
+        onchange="getFileNames()"
+      />
+      <div id="hiddens"></div>
+      <button>Ok</button>
+    </form>
+
+    <script>
+      function getFileNames() {
+        const fileInput = document.getElementById("filesInput");
+        const parent = document.getElementById("hiddens");
+
+        parent.innerHTML = "";
+
+        for (let i = 0; i < fileInput.files.length; i++) {
+          console.log("fileinput change", fileInput.files[i].name);
+          parent.insertAdjacentHTML(
+            "beforeend",
+            `<input type="hidden" name="filesNames" value="${fileInput.files[i].name}" />`,
+          );
+        }
+      }
+
+      document.getElementById("form").addEventListener("submit", function (e) {
+        e.preventDefault();
+        document.getElementById("filesInput").value = "";
+        e.target.submit();
+      });
+    </script>
   </body>
 </html>
